@@ -1,7 +1,8 @@
-# tech-production-maze-game
+To set up the project. Jump into codespaces.
 
-# tech-production-maze-game
+```cd maze-game```
+```npm install```
+```npm run dev```
 
-# This is the final change that will make it through a pull request.
-
-# Seriously, will be the last change.
+Work should be done in 
+```/maze-game/src/main.ts```
