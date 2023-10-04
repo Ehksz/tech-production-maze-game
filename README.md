@@ -1,3 +1,5 @@
+# Collaborators
+- Bryan Estevez
 To set up the project. Jump into codespaces.
 
 ```cd maze-game```
