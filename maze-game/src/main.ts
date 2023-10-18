@@ -7,20 +7,33 @@ const MIN_SIZE_HEIGHT_SCREEN = 480
 const SIZE_WIDTH_SCREEN = 540
 const SIZE_HEIGHT_SCREEN = 960
 
+
 class MyGame extends Phaser.Scene {
+    
     constructor() {
         super('MyGame');
     }
-  
+
     preload() {
         // Load your assets here (e.g., images, spritesheets, audio)
         this.load.image('logo', '/typescript.svg');
+        this.load.image('square','/SquareZombie.png');
+        
     }
-  
+
     create() {
         // Create your game objects and set up your scene here
         const logo = this.add.image(400, 300, 'logo');
-        
+        const square = this.add.image(700,400,'square');
+        square.scale = 0.1;
+        const cursorKeys = this.input.keyboard?.createCursorKeys();
+        this.update = () =>{
+          if(cursorKeys?.up.isDown){
+                square.y -=2;
+           }
+       }
+
+
         // Add a simple tween animation to the logo
         this.tweens.add({
             targets: logo,
@@ -30,12 +43,14 @@ class MyGame extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
+
     }
   
     update() {
-        // Update your game logic here
+
     }
-}
+    }
+
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
@@ -58,3 +73,8 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 new Phaser.Game(config);
+
+
+
+
+
