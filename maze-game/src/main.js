@@ -5,7 +5,6 @@ const sizes = {
   width: 500,
   height: 500
 }
-
 const speedDown = 300
 
 class GameScene extends Phaser.Scene{
@@ -15,8 +14,11 @@ class GameScene extends Phaser.Scene{
   }
   preload(){
     this.load.image("theplayer", "/assets/theplayer.png")
+    this.load.image("bg", "/assets/bg.png");
   }
   create(){
+    this.add.image(0, 0, "bg").setOrigin(0,0);
+
     this.player = this.physics.add.image(sizes.width-300, sizes.height-300, "theplayer").setOrigin(0,0)
     this.player.setImmovable(true)
     this.player.body.allowGravity = false
