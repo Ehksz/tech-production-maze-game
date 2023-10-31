@@ -20,17 +20,26 @@ class GameScene extends Phaser.Scene {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.player = this.add
       .image(sizes.width - 300, sizes.height - 300, "theplayer")
-      .setOrigin(0, 0);
-
+      .setOrigin(0, 0); 
     this.player.scale = 0.5;
-    const cursorKeys = this.input.keyboard?.createCursorKeys();
-    this.update = () => {
-      if (cursorKeys?.up.isDown) {
-        this.player.y -= 2;
-      }
-    };
+
   }
-  update() {}
+  update() {
+    const cursorKeys = this.input.keyboard?.createCursorKeys();
+    if (cursorKeys?.up.isDown) {
+      this.player.y -= 2;
+    }
+    else if(cursorKeys?.down.isDown){
+      this.player.y +=2;
+    }
+    else if(cursorKeys?.left.isDown){
+      this.player.x -=2;
+    }
+    else if(cursorKeys?.right.isDown){
+      this.player.x +=2;
+    } 
+
+  }
 }
 
 const config = {
