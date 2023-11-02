@@ -22,7 +22,6 @@ class GameScene extends Phaser.Scene {
       .image(sizes.width - 300, sizes.height - 300, "theplayer")
       .setOrigin(0, 0); 
     this.player.scale = 0.5;
-
   }
   update() {
     const cursorKeys = this.input.keyboard?.createCursorKeys();
@@ -37,8 +36,19 @@ class GameScene extends Phaser.Scene {
     }
     else if(cursorKeys?.right.isDown){
       this.player.x +=2;
-    } 
-
+    }
+    // for loop create 3 square top each other and beside.
+    const size = 40;
+    for(let i = 0; i < 3; i++){
+      const squarex = 1045;
+      const squarey = 500 + i * (size + 5);
+      const square = this.add.rectangle(squarex,squarey,size,size,0xffffff);
+    }
+    for(let i = 0; i < 3; i++){
+      const squarex = 1000 + i * (size + 5);
+      const squarey = 590;
+      const square = this.add.rectangle(squarex,squarey,size,size,0xffffff);
+    }
   }
 }
 
