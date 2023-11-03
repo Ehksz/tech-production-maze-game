@@ -10,37 +10,76 @@ const speedDown = 300;
 
 class GameScene extends Phaser.Scene {
   constructor() {
-    super("scene-game");
+    super("scene-game")
     this.player;
+    this.cursor;
+    this.playerSpeed = speedDown + 50;
+    this.object;//template to asiign the mutlple or single object/asset
+
   }
 
-  preload() {
+  preload(){
     this.load.image("theplayer", "/assets/theplayer.png");
+    this.load.image("apple", "assets/apple.png");
     this.load.image("bg", "/assets/bg.png");
   }
 
-  create() {
-    this.add.image(0, 0, "bg").setOrigin(0, 0);
-    this.player = this.add
-      .image(sizes.width - 300, sizes.height - 300, "theplayer")
-      .setOrigin(0, 0); 
-    this.player.scale = 0.5;
-  }
+  create(){
+    //player code
+    this.player = this.physics.add.image(sizes.width-300, sizes.height-300, "theplayer").setOrigin(0,0)
+    this.player.body.allowGravity = false
+    this.player.setCollideWorldBounds(true);
+    //keyboard movement for player testing
+    this.cursor = this.input.keyboard.createCursorKeys();
+    
 
-  update() {
-    const cursorKeys = this.input.keyboard?.createCursorKeys();
-    if (cursorKeys?.up.isDown) {
-      this.player.y -= 2;
+    //template for object/asset hitbox
+    this.object = this.physics.add.image(sizes.width - 300, sizes.height - 300, "apple").setOrigin(0, 0);
+    this.object.setCollideWorldBounds(true);
+    this.object.body.allowGravity = false;
+    this.object.setImmovable(true);
+    //line 39 is the template for the hitbox of an object/asset
+   // this.object.setSize(this.object.width / 10, this.object.height - this.object.height / 10);
+
+   this.physics.add.collider(this.player, this.object);
+   this.add.image(0, 0, "bg").setOrigin(0, 0);
+   this.player.scale = 0.5;
+  }
+  //my player controls for testing using keyboard
+  update(){
+    const { left, right, up, down } = this.cursor;
+
+    if (left.isDown) {
+      this.player.setVelocityX(-this.playerSpeed);
+    } else if (right.isDown) {
+      this.player.setVelocityX(this.playerSpeed);
+    } else {
+      this.player.setVelocityX(0);
     }
-    else if(cursorKeys?.down.isDown){
-      this.player.y +=2;
+    
+    if (up.isDown) {
+      this.player.setVelocityY(-this.playerSpeed);
+    } else if (down.isDown) {
+      this.player.setVelocityY(this.playerSpeed);
+    } else {
+      this.player.setVelocityY(0);
     }
-    else if(cursorKeys?.left.isDown){
-      this.player.x -=2;
-    }
-    else if(cursorKeys?.right.isDown){
-      this.player.x +=2;
-    }
+
+
+    // This is main code
+    // const cursorKeys = this.input.keyboard?.createCursorKeys();
+    // if (cursorKeys?.up.isDown) {
+    //   this.player.y -= 2;
+    // }
+    // else if(cursorKeys?.down.isDown){
+    //   this.player.y +=2;
+    // }
+    // else if(cursorKeys?.left.isDown){
+    //   this.player.x -=2;
+    // }
+    // else if(cursorKeys?.right.isDown){
+    //   this.player.x +=2;
+    // }
 
     // for loop create 3 square top each other and beside.
     const size = 40;
@@ -58,6 +97,7 @@ class GameScene extends Phaser.Scene {
     }
   }
 }
+
 
 const config = {
   type: Phaser.WEBGL,
