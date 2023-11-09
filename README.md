@@ -1,14 +1,8 @@
 # Collaborators
-<<<<<<< HEAD
 - Bryan Estevez
-
-=======
 - Edward Gonzalez
-
-=======
 - Marlen Xique
 
->>>>>>> test
 To set up the project. Jump into codespaces.
 
 ```cd maze-game```
