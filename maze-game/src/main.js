@@ -36,6 +36,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('rat','/assets/glowing-asset/rat-glow.png');
     this.load.image('red-skull','/assets/glowing-asset/red-skull-glow.png');
     this.load.image('torch','/assets/glowing-asset/torch-glow.png');
+    this.load.audio('bg-audio', "/assets/dead.mp3");
   }
 
   create(){
@@ -61,8 +62,10 @@ class GameScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     //keyboard movement for player testing
     this.cursor = this.input.keyboard.createCursorKeys();
-    
-
+        //background audio
+        this.bgMusic = this.sound.add('bg-audio');
+        // this.bgMusic.play();
+        
     //template for object/asset hitbox
     this.object = this.physics.add.image(sizes.width - 300, sizes.height - 300, "apple").setOrigin(0, 0);
     this.object.setCollideWorldBounds(true);
@@ -75,6 +78,7 @@ class GameScene extends Phaser.Scene {
    this.add.image(0, 0, "bg").setOrigin(0, 0);
    this.player.scale = 0.5;
   }
+  
   //my player controls for testing using keyboard
   update(){
     const { left, right, up, down } = this.cursor;
