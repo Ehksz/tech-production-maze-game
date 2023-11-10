@@ -22,20 +22,6 @@ class GameScene extends Phaser.Scene {
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
     this.load.image("bg", "/assets/bg.png");
-
-    //glowing asset
-    this.load.image('apple-0','/assets/glowing-asset/apple-glow.png');
-    this.load.image('bag','/assets/glowing-asset/bag-glow.png');
-    this.load.image('book','/assets/glowing-asset/book-glow.png');
-    this.load.image('cauldron','/assets/glowing-asset/cauldron-glow.png');
-    this.load.image('chest','/assets/glowing-asset/chest-glow.png');
-    this.load.image('clock','/assets/glowing-asset/clock-glow.png');
-    this.load.image('feather-quill','/assets/glowing-asset/feather-quill-glow.png');
-    this.load.image('horn','/assets/glowing-asset/horn-glow.png');
-    this.load.image('pile','/assets/glowing-asset/pile-glow.png');
-    this.load.image('rat','/assets/glowing-asset/rat-glow.png');
-    this.load.image('red-skull','/assets/glowing-asset/red-skull-glow.png');
-    this.load.image('torch','/assets/glowing-asset/torch-glow.png');
     this.load.audio('bg-audio', "/assets/dead.mp3");
   }
 
