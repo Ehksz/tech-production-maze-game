@@ -22,8 +22,26 @@ class GameScene extends Phaser.Scene {
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
     this.load.image("bg", "/assets/bg.png");
+<<<<<<< HEAD
     this.load.audio('bg-audio', "/assets/dead.mp3");
     this.load.audio('soundMove', "/assets/soundMove.mp3");
+=======
+
+    //glowing asset
+    this.load.image('apple-0','/assets/glowing-asset/apple-glow.png');
+    this.load.image('bag','/assets/glowing-asset/bag-glow.png');
+    this.load.image('book','/assets/glowing-asset/book-glow.png');
+    this.load.image('cauldron','/assets/glowing-asset/cauldron-glow.png');
+    this.load.image('chest','/assets/glowing-asset/chest-glow.png');
+    this.load.image('clock','/assets/glowing-asset/clock-glow.png');
+    this.load.image('feather-quill','/assets/glowing-asset/feather-quill-glow.png');
+    this.load.image('horn','/assets/glowing-asset/horn-glow.png');
+    this.load.image('pile','/assets/glowing-asset/pile-glow.png');
+    this.load.image('rat','/assets/glowing-asset/rat-glow.png');
+    this.load.image('red-skull','/assets/glowing-asset/red-skull-glow.png');
+    this.load.image('torch','/assets/glowing-asset/torch-glow.png');
+    this.load.audio('bg-audio', "/assets/dead.mp3");
+>>>>>>> dad63df (wpi)
   }
 
   create(){
@@ -54,8 +72,13 @@ class GameScene extends Phaser.Scene {
     //keyboard movement for player testing
     this.cursor = this.input.keyboard.createCursorKeys();
         //background audio
+<<<<<<< HEAD
     this.bgMusic = this.sound.add('bg-audio');
     // this.bgMusic.play();
+=======
+        this.bgMusic = this.sound.add('bg-audio');
+        // this.bgMusic.play();
+>>>>>>> dad63df (wpi)
         
     //template for object/asset hitbox
     this.object = this.physics.add.image(sizes.width - 300, sizes.height - 300, "apple").setOrigin(0, 0);
