@@ -22,10 +22,8 @@ class GameScene extends Phaser.Scene {
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
     this.load.image("bg", "/assets/bg.png");
-<<<<<<< HEAD
     this.load.audio('bg-audio', "/assets/dead.mp3");
     this.load.audio('soundMove', "/assets/soundMove.mp3");
-=======
 
     //glowing asset
     this.load.image('apple-0','/assets/glowing-asset/apple-glow.png');
@@ -41,7 +39,6 @@ class GameScene extends Phaser.Scene {
     this.load.image('red-skull','/assets/glowing-asset/red-skull-glow.png');
     this.load.image('torch','/assets/glowing-asset/torch-glow.png');
     this.load.audio('bg-audio', "/assets/dead.mp3");
->>>>>>> dad63df (wpi)
   }
 
   create(){
@@ -72,13 +69,8 @@ class GameScene extends Phaser.Scene {
     //keyboard movement for player testing
     this.cursor = this.input.keyboard.createCursorKeys();
         //background audio
-<<<<<<< HEAD
     this.bgMusic = this.sound.add('bg-audio');
     // this.bgMusic.play();
-=======
-        this.bgMusic = this.sound.add('bg-audio');
-        // this.bgMusic.play();
->>>>>>> dad63df (wpi)
         
     //template for object/asset hitbox
     this.object = this.physics.add.image(sizes.width - 300, sizes.height - 300, "apple").setOrigin(0, 0);
@@ -92,6 +84,15 @@ class GameScene extends Phaser.Scene {
    this.add.image(0, 0, "bg").setOrigin(0, 0);
    this.player.scale = 0.5;
    this.soundMove.play()
+
+   //circle color changes when clicked
+   var colors = [0xff0000, 0x00ff00]; // Red and Green
+   var currentIndex = 1; // Start with green
+   var circle = this.add.circle(100, 200, 25, colors[currentIndex]).setInteractive();
+   circle.on('pointerdown', function () {
+     currentIndex = (currentIndex + 1) % colors.length;
+     circle.fillColor = colors[currentIndex];
+   });
   }
   
   //my player controls for testing using keyboard
