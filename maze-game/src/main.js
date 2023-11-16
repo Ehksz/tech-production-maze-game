@@ -1,5 +1,4 @@
-import "./style.css";
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
 const sizes = {
   width: 1920,
@@ -9,45 +8,66 @@ const speedDown = 300;
 
 class GameScene extends Phaser.Scene {
   constructor() {
-    super("scene-game");
+    super('scene-game');
     this.player;
+    //jumping variables
+    this.spaceBar;
+    this.isJumping = false;
+    this.jumpHeight = 100;
+    this.orignalJumpSpot;//the oringal y axis when the player initalize the jump 
   }
+
   preload() {
-    this.load.image("theplayer", "/assets/theplayer.png");
-    this.load.image("bg", "/assets/bg.png");
+    this.load.image('theplayer', 'assets/theplayer.png');
+    this.load.image('bg', 'assets/bg.png');
   }
+
   create() {
-    this.add.image(0, 0, "bg").setOrigin(0, 0);
-    this.player = this.add
-      .image(sizes.width - 300, sizes.height - 300, "theplayer")
-      .setOrigin(0, 0); 
-    this.player.scale = 0.5;
+    this.add.image(0, 0, 'bg').setOrigin(0, 0);
+    this.player = this.physics.add.sprite(sizes.width - 300, sizes.height - 300, 'theplayer');
+    this.player.setScale(0.5);
+    this.player.setCollideWorldBounds(true);
+    // Create keyboard cursors
+    this.cursors = this.input.keyboard.createCursorKeys();
+    // creates the button to jump for the player
+    this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    
+    
   }
+
   update() {
-    const cursorKeys = this.input.keyboard?.createCursorKeys();
-    if (cursorKeys?.up.isDown) {
-      this.player.y -= 2;
+    const player = this.player;
+
+    // Player movement
+    if (this.cursors.up.isDown) {
+      player.y -= 2;
+    } else if (this.cursors.down.isDown) {
+      player.y += 2;
+    } else if (this.cursors.left.isDown) {
+      player.x -= 2;
+    } else if (this.cursors.right.isDown) {
+      player.x += 2;
     }
-    else if(cursorKeys?.down.isDown){
-      this.player.y +=2;
+    
+    // Jumping logic
+    if (!this.isJumping) {
+      this.originalJumpSpot = player.y;
     }
-    else if(cursorKeys?.left.isDown){
-      this.player.x -=2;
+    
+    if (Phaser.Input.Keyboard.JustDown(this.spaceBar) && !this.isJumping) {
+      this.isJumping = true;
     }
-    else if(cursorKeys?.right.isDown){
-      this.player.x +=2;
+    //logic for when the player jumps once and reaches the jump height value
+    if (this.isJumping) {
+      player.setVelocityY(-200);
+      if (this.originalJumpSpot - this.jumpHeight >= player.y) {
+        this.isJumping = false;
+        player.setVelocityY(200); // Change velocity to start falling
+      }
     }
-    // for loop create 3 square top each other and beside.
-    const size = 40;
-    for(let i = 0; i < 3; i++){
-      const squarex = 1045;
-      const squarey = 500 + i * (size + 5);
-      const square = this.add.rectangle(squarex,squarey,size,size,0xffffff);
-    }
-    for(let i = 0; i < 3; i++){
-      const squarex = 1000 + i * (size + 5);
-      const squarey = 590;
-      const square = this.add.rectangle(squarex,squarey,size,size,0xffffff);
+    //logic for when the player falls back down to the floor/boundary. "onfloor" is set to world boundary; which can be changed
+    if (this.isJumping === false && player.body.onFloor()) {
+      player.setVelocityY(0); // Stop any vertical velocity
     }
   }
 }
@@ -56,12 +76,11 @@ const config = {
   type: Phaser.WEBGL,
   width: sizes.width,
   height: sizes.height,
-  canvas: gameCanvas,
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       gravity: { y: speedDown },
-      debug: true,
+      debug: false,
     },
   },
   scene: [GameScene],
