@@ -22,9 +22,39 @@ class GameScene extends Phaser.Scene {
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
     this.load.image("bg", "/assets/bg.png");
+
+    //glowing asset
+    this.load.image('apple-0','/assets/glowing-asset/apple-glow.png');
+    this.load.image('bag','/assets/glowing-asset/bag-glow.png');
+    this.load.image('book','/assets/glowing-asset/book-glow.png');
+    this.load.image('cauldron','/assets/glowing-asset/cauldron-glow.png');
+    this.load.image('chest','/assets/glowing-asset/chest-glow.png');
+    this.load.image('clock','/assets/glowing-asset/clock-glow.png');
+    this.load.image('feather-quill','/assets/glowing-asset/feather-quill-glow.png');
+    this.load.image('horn','/assets/glowing-asset/horn-glow.png');
+    this.load.image('pile','/assets/glowing-asset/pile-glow.png');
+    this.load.image('rat','/assets/glowing-asset/rat-glow.png');
+    this.load.image('red-skull','/assets/glowing-asset/red-skull-glow.png');
+    this.load.image('torch','/assets/glowing-asset/torch-glow.png');
   }
 
   create(){
+    //glowing images
+    this.add.image(600,400,'apple-0');
+    this.add.image(650,400,'bag');
+    this.add.image(700,400,'book');
+    this.add.image(750,400,'cauldron');
+    this.add.image(800,400,'chest');
+    this.add.image(850,400,'clock');
+    this.add.image(900,400,'feather-quill');
+    this.add.image(950,400,'horn');
+    this.add.image(1000,400,'pile');
+    this.add.image(1050,400,'rat');
+    this.add.image(1100,400,'red-skull');
+    this.add.image(1150,400,'torch');
+
+
+
     //player code
     this.player = this.physics.add.image(sizes.width-300, sizes.height-300, "theplayer").setOrigin(0,0)
     this.player.body.allowGravity = false
