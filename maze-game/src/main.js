@@ -6,7 +6,7 @@ const sizes = {
   height: 1080,
 };
 
-const speedDown = 300;
+const speedDown = 600;
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -56,14 +56,11 @@ class GameScene extends Phaser.Scene {
     this.add.image(1100,400,'red-skull');
     this.add.image(1150,400,'torch');
 
-
-
     //player code
-    this.soundMove = this.sound.add("soundMove", {
-      volume: 1,
-  });
+    this.soundMove = this.sound.add("soundMove", { volume: 1 });
+
     this.player = this.physics.add.image(sizes.width-300, sizes.height-300, "theplayer").setOrigin(0,0)
-    this.player.rotation()
+    // this.player.rotation()
     this.player.body.allowGravity = false
     this.player.setCollideWorldBounds(true);
     //keyboard movement for player testing
@@ -83,7 +80,9 @@ class GameScene extends Phaser.Scene {
    this.physics.add.collider(this.player, this.object);
    this.add.image(0, 0, "bg").setOrigin(0, 0);
    this.player.scale = 0.5;
-   this.soundMove.play()
+
+   this.soundMove.setVolume(1);
+   this.soundMove.play();
 
    //circle color changes when clicked
    var colors = [0xff0000, 0x00ff00]; // Red and Green
@@ -93,41 +92,48 @@ class GameScene extends Phaser.Scene {
      currentIndex = (currentIndex + 1) % colors.length;
      circle.fillColor = colors[currentIndex];
    });
+
   }
   
   //my player controls for testing using keyboard
   update(){
 
+    const playerVolume = this.soundMove.volume;
+
     if(typeof this.cursor !== 'undefined') {
       const { left, right, up, down } = this.cursor;
 
       if (left.isDown) {
-        this.isMoving = true;
         this.player.setVelocityX(-this.playerSpeed);
+        if(playerVolume !== 1) {
+          this.soundMove.setVolume(1)
+        }
       } else if (right.isDown) {
-        this.isMoving = true;
         this.player.setVelocityX(this.playerSpeed);
+        if(playerVolume !== 1) {
+          this.soundMove.setVolume(1)
+        }
       } else {
-        this.isMoving = false;
         this.player.setVelocityX(0);
+        this.soundMove.setVolume(0)
       }
       
       if (up.isDown) {
-        this.isMoving = true;
         this.player.setVelocityY(-this.playerSpeed);
+        if(playerVolume !== 1) {
+          this.soundMove.setVolume(1)
+        }
       } else if (down.isDown) {
-        this.isMoving = true;
         this.player.setVelocityY(this.playerSpeed);
+        if(playerVolume !== 1) {
+          this.soundMove.setVolume(1)
+        }
       } else {
         this.player.setVelocityY(0);
-        this.isMoving = false;
+        if(playerVolume !== 0) {
+          this.soundMove.setVolume(0)
+        }
       }
-    }
-
-    if(this.isMoving) {
-      this.soundMove.setVolume(1)
-    } else {
-      this.soundMove.setVolume(0);
     }
 
     // for loop create 3 square top each other and beside.
