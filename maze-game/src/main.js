@@ -6,7 +6,7 @@ const sizes = {
   height: 1080,
 };
 
-const speedDown = 600;
+const speedDown = 400;
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -109,11 +109,15 @@ class GameScene extends Phaser.Scene {
 
       if (left.isDown) {
         this.player.setVelocityX(-this.playerSpeed);
+        // rotate player to assign direction
+        this.player.angle = 270;
         if(playerVolume !== 1) {
           this.soundMove.setVolume(1)
         }
       } else if (right.isDown) {
         this.player.setVelocityX(this.playerSpeed);
+        // rotate player to assign direction
+        this.player.angle = 90;
         if(playerVolume !== 1) {
           this.soundMove.setVolume(1)
         }
@@ -121,14 +125,33 @@ class GameScene extends Phaser.Scene {
         this.player.setVelocityX(0);
         this.soundMove.setVolume(0)
       }
-      
       if (up.isDown) {
         this.player.setVelocityY(-this.playerSpeed);
+        // if the left, right and up key is pressed same time then rotate player to assign direction
+        if(left.isDown){
+          this.player.angle = 315;
+        }
+        else if (right.isDown){
+          this.player.angle = 45;
+        }
+        else{
+          this.player.angle = 0;
+        }
         if(playerVolume !== 1) {
           this.soundMove.setVolume(1)
         }
       } else if (down.isDown) {
         this.player.setVelocityY(this.playerSpeed);
+       // if the left, right and down key is pressed same time then rotate player to assign direction
+       if(left.isDown){
+        this.player.angle = 225;
+      }
+      else if (right.isDown){
+        this.player.angle = 135;
+      }
+      else{
+        this.player.angle = 180;
+      }
         if(playerVolume !== 1) {
           this.soundMove.setVolume(1)
         }
