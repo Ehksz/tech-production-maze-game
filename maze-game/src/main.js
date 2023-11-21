@@ -21,7 +21,7 @@ class GameScene extends Phaser.Scene {
   preload(){
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
-    this.load.image("bg", "/assets/bg.png");
+    this.load.image("background", "/assets/bg.png");
     this.load.audio('bg-audio', "/assets/dead.mp3");
     this.load.audio('soundMove', "/assets/soundMove.mp3");
 
@@ -42,6 +42,11 @@ class GameScene extends Phaser.Scene {
   }
 
   create(){
+      // Set the scale to cover the entire game width and height
+      var background = this.add.image(0, 0, "background");
+      background.setScale(config.width / background.width, config.height / background.height);
+      background.setOrigin(0);
+
     //glowing images
     this.add.image(600,400,'apple-0');
     this.add.image(650,400,'bag');
@@ -55,7 +60,6 @@ class GameScene extends Phaser.Scene {
     this.add.image(1050,400,'rat');
     this.add.image(1100,400,'red-skull');
     this.add.image(1150,400,'torch');
-
     //player code
     this.soundMove = this.sound.add("soundMove", { volume: 1 });
 
