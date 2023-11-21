@@ -55,6 +55,12 @@ class GameScene extends Phaser.Scene {
     this.add.image(1050,400,'rat');
     this.add.image(1100,400,'red-skull');
     this.add.image(1150,400,'torch');
+      
+    // Set the scale to cover the entire game width and height
+    var background = this.add.image(0, 0, 'background');
+    background.setScale(config.width / background.width, config.height / background.height);
+    background.setOrigin(0);
+
 
     //player code
     this.soundMove = this.sound.add("soundMove", { volume: 1 });
