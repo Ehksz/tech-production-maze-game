@@ -39,13 +39,42 @@ class GameScene extends Phaser.Scene {
     this.load.image('red-skull','/assets/glowing-asset/red-skull-glow.png');
     this.load.image('torch','/assets/glowing-asset/torch-glow.png');
     this.load.audio('bg-audio', "/assets/dead.mp3");
+
+    //Christian - Artifiacts
+    this.load.image('apple-1','/assets/christian-artifacts/apple.png');
+    this.load.image('bag-0','/assets/christian-artifacts/bag.png');
+    this.load.image('book-0','/assets/christian-artifacts/book.png');
+    this.load.image('cauldron-0','/assets/christian-artifacts/cauldron.png');
+    this.load.image('chest-0','/assets/christian-artifacts/chest.png');
+    this.load.image('clock-0','/assets/christian-artifacts/clock.png');
+    this.load.image('feather-0','/assets/christian-artifacts/feather.png');
+    this.load.image('horn-0','/assets/christian-artifacts/horn.png');
+    this.load.image('pile-0','/assets/christian-artifacts/pile.png');
+    this.load.image('rat-0','/assets/christian-artifacts/rat.png');
+    this.load.image('red-skull-0','/assets/christian-artifacts/red-skull.png');
+    this.load.image('torch-0','/assets/christian-artifacts/torch.png');
   }
 
   create(){
-      // Set the scale to cover the entire game width and height
-      var background = this.add.image(0, 0, "background");
-      background.setScale(config.width / background.width, config.height / background.height);
-      background.setOrigin(0);
+    // Set the scale to cover the entire game width and height
+    var background = this.add.image(0, 0, "background");
+    background.setScale(config.width / background.width, config.height / background.height);
+    background.setOrigin(0);
+    //Christian images
+    this.add.image(700,700,'apple-1');
+    this.add.image(750, 700, 'bag-0');
+    this.add.image(800, 700, 'book-0');
+    this.add.image(850,700, 'cauldron-0');
+    this.add.image(900, 700, 'chest-0');
+    this.add.image(950, 700, 'clock-0');
+    this.add.image(1000, 700, 'feather-0');
+    this.add.image(1050, 700, 'horn-0');
+    this.add.image(1100, 700, 'pile-0');
+    this.add.image(1150, 700, 'rat-0');
+    this.add.image(1200, 700, 'red-skull-0');
+    this.add.image(1250, 700, 'torch-0')
+;    
+
 
     //glowing images
     this.add.image(600,400,'apple-0');
