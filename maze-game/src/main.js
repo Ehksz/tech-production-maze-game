@@ -1,4 +1,5 @@
 import "./style.css";
+import Preloader from "./Preloader.js";
 import Phaser from "phaser";
 
 const sizes = {
@@ -18,7 +19,7 @@ class GameScene extends Phaser.Scene {
     this.isMoving = false;
   }
 
-  preload(){
+ /* preload(){
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
     this.load.image("background", "/assets/bg.png");
@@ -53,7 +54,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('rat-0','/assets/christian-artifacts/rat.png');
     this.load.image('red-skull-0','/assets/christian-artifacts/red-skull.png');
     this.load.image('torch-0','/assets/christian-artifacts/torch.png');
-  }
+  } */
 
   create(){
     // Set the scale to cover the entire game width and height
