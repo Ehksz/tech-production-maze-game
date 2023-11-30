@@ -16,6 +16,10 @@ class GameScene extends Phaser.Scene {
     this.playerSpeed = speedDown + 50;
     this.object;//template to asiign the mutlple or single object/asset
     this.isMoving = false;
+    this.spaceBar;
+    this.isJumping = false;
+    this.jumpHeight = 100;
+    this.orignalJumpSpot;//the oringal y axis when the player initalize the jump 
   }
 
   preload(){
@@ -53,6 +57,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('rat-0','/assets/christian-artifacts/rat.png');
     this.load.image('red-skull-0','/assets/christian-artifacts/red-skull.png');
     this.load.image('torch-0','/assets/christian-artifacts/torch.png');
+    this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
   create(){
@@ -103,7 +108,7 @@ class GameScene extends Phaser.Scene {
     // this.bgMusic.play();
         
     //template for object/asset hitbox
-    this.object = this.physics.add.image(sizes.width - 300, sizes.height - 300, "apple").setOrigin(0, 0);
+    this.object = this.physics.add.image(sizes.width - 300, sizes.height - 300, "apple").setOrigin('50%' , '50%');
     this.object.setCollideWorldBounds(true);
     this.object.body.allowGravity = false;
     this.object.setImmovable(true);
@@ -206,6 +211,27 @@ class GameScene extends Phaser.Scene {
       const squarey = 590;
       const square = this.add.rectangle(squarex,squarey,size,size,0xffffff);
     }
+
+    // Jumping logic
+    if (!this.isJumping) {
+      this.originalJumpSpot = this.player.y;
+    }
+    
+    if (Phaser.Input.Keyboard.JustDown(this.spaceBar) && !this.isJumping) {
+      this.isJumping = true;
+    }
+    //logic for when the player jumps once and reaches the jump height value
+    if (this.isJumping) {
+      this.player.setVelocityY(-200);
+      if (this.originalJumpSpot - this.jumpHeight >= this.player.y) {
+        this.isJumping = false;
+        this.player.setVelocityY(200); // Change velocity to start falling
+      }
+    }
+    //logic for when the player falls back down to the floor/boundary. "onfloor" is set to world boundary; which can be changed
+    if (this.isJumping === false && this.player.body.onFloor()) {
+      this.player.setVelocityY(0); // Stop any vertical velocity
+    }   
   }
 }
 
