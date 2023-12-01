@@ -138,13 +138,19 @@ class GameScene extends Phaser.Scene {
     //line 39 is the template for the hitbox of an object/asset
     // this.object.setSize(this.object.width / 10, this.object.height - this.object.height / 10);
 
+<<<<<<< HEAD
     this.physics.add.collider(this.player, this.object);
     this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.player.scale = 0.5;
+=======
+   this.physics.add.collider(this.player, this.object);
+   this.player.scale = 0.5;
+>>>>>>> e11ae36 (added a small textblock)
 
     this.soundMove.setVolume(1);
     this.soundMove.play();
 
+<<<<<<< HEAD
     //circle color changes when clicked
     var colors = [0xff0000, 0x00ff00]; // Red and Green
     var currentIndex = 1; // Start with green
@@ -154,6 +160,44 @@ class GameScene extends Phaser.Scene {
       circle.fillColor = colors[currentIndex];
     });
 
+=======
+   //when circle is clicked, color changes and text appears
+   var colors = [0xff0000, 0x00ff00]; // Red and Green
+   var currentIndex = 0; // Start with red
+   var textBlock;
+   var backgroundRect;
+   var scene = this;  
+   var circle = this.add.circle(700, 200, 25, colors[currentIndex]).setInteractive();
+   var textBlockX = 750
+   var textBlockY = 200
+   
+   circle.on('pointerdown', function () {
+       // Toggle color
+       currentIndex = (currentIndex + 1) % colors.length;
+       circle.fillColor = colors[currentIndex];
+       // Toggle text block visibility
+       if (currentIndex === 1) {
+           if (!textBlock) {
+               // Create text block if not exists
+               textBlock = scene.add.text(textBlockX, textBlockY, "Hello, this is a text block!", { fontSize: '18px', fill: '#fff' });
+               textBlock.setVisible(false);
+               // Create a semi-transparent rectangle behind the text
+               backgroundRect = scene.add.rectangle(textBlockX - 10, textBlockY - 10, textBlock.width + 20, textBlock.height + 20, 0x000000, 0.7);
+               backgroundRect.setOrigin(0, 0);
+               backgroundRect.setVisible(false);
+           }
+           textBlock.setVisible(!textBlock.visible);
+           // Toggle background rectangle visibility along with the text block
+           backgroundRect.setVisible(textBlock.visible);
+       } else {
+           // If the circle is red, hide the text block and background rectangle
+           if (textBlock) {
+               textBlock.setVisible(false);
+               backgroundRect.setVisible(false);
+           }
+       }
+   });
+>>>>>>> e11ae36 (added a small textblock)
   }
 
   //my player controls for testing using keyboard
