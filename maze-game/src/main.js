@@ -76,6 +76,14 @@ class GameScene extends Phaser.Scene {
     // var background = data.background;
     // var playerSpritesheet = data.playerSpritesheet;
 
+    // [name]-[preloader | start | gameover | gamewin | maze]
+    // bryan-preloader [maze]
+    // angel-preloader[gameover, gamewin] [maze]
+    // justice-start [gameover, gamewin] [maze]
+    // marlen-start [gameover, gamewin] [maze]
+    // edward-maze [maze]
+    // su-huan-li-maze [maze]
+
     this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     // Set the scale to cover the entire game width and height
     var background = this.add.image(0, 0, "background");
