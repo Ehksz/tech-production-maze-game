@@ -6,6 +6,9 @@ export default class Preloader extends Phaser.Scene {
     }
 
     preload() {
+
+        
+        this.load.image("home", "/assets/home.jpg");
         this.load.image("theplayer", "/assets/theplayer.png");
         this.load.image("apple", "assets/apple.png");
         this.load.image("background", "/assets/bg.png");
@@ -45,12 +48,73 @@ export default class Preloader extends Phaser.Scene {
         // Clicking sound
         // Background music.
         // Button, pressed and unpressed.
+        var progressBar = this.add.graphics();
+            var progressBox = this.add.graphics();
+            progressBox.fillStyle(0x222222, .8);
+            progressBox.fillRect(780, 370, 350, 50);
+            
+            var width = this.cameras.main.width;
+            var height = this.cameras.main.height;
+            var loadingText = this.make.text({
+                x: width / 2,
+                y: height / 2 - 50,
+                text: 'Loading...',
+                style: {
+                    font: '20px monospace',
+                    fill: '#ffffff'
+                }
+            });
+            loadingText.setOrigin(0.5, 0.5);
+            
+            var percentText = this.make.text({
+                x: width / 2,
+                y: height / 2 - 5,
+                text: '0%',
+                style: {
+                    font: '18px monospace',
+                    fill: '#ffffff'
+                }
+            });
+            percentText.setOrigin(0.5, 0.5);
+            
+            var assetText = this.make.text({
+                x: width / 2,
+                y: height / 2 + 50,
+                text: '',
+                style: {
+                    font: '18px monospace',
+                    fill: '#ffffff'
+                }
+            });
+            assetText.setOrigin(0.5, 0.5);
+            
+            this.load.on('progress', function (value) {
+                percentText.setText(parseInt(value * 100) + '%');
+                progressBar.clear();
+                progressBar.fillStyle(0xffffff, 1);
+                progressBar.fillRect(790, 380, 330 * value, 30);
+            });
+            
+            this.load.on('fileprogress', function (file) {
+                assetText.setText('Loading asset: ' + file.src);
+            });
+
+            this.load.on('complete', function (file) {
+                //this.scene.start('Start', {
+                    //background: this.backgroundImage,
+                    //playerSpritesheet: this.playerSpritesheet
+                });    
+            //});
+
+            
     }
 
     create() {
         // Progress bar text [ Loading ]
             // Store loaded assets in properties of the preload scene
-    this.backgroundImage = this.add.image(0, 0, 'background').setOrigin(0, 0);
+    this.loading = this.add.image(0, 0, 'home');
+    //this.backgroundImage = this.add.image(0, 0, 'home').setOrigin(0, 0);
+    //this.add.image(0, 0, "home").setOrigin(0, 0);
     this.playerSpritesheet = this.textures.get('player');
 
     // Transition to the main game scene after loading

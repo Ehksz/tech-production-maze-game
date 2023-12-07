@@ -5,6 +5,13 @@
 --accClr:#68f2b5;
 }
 
+@font-face {
+  font-family: johnDoe;
+  src: url('assets/john_doe_regular.otf');
+  font-weight: 400;
+  font-weight: normal;
+}
+
 *{
   margin:0;
   padding: 0;
