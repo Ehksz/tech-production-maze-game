@@ -169,56 +169,119 @@ class GameScene extends Phaser.Scene {
 
     this.soundMove.play();
 
-    //when circle is clicked, color changes and text appears
-    var colors = [0xff0000, 0x00ff00]; // Red and Green
-    var currentIndex = 0; // Start with red
-    var textBlock;
-    var backgroundRect;
-    var scene = this;
-    var circle = this.add
-      .circle(700, 200, 25, colors[currentIndex])
-      .setInteractive();
-    var textBlockX = 750;
-    var textBlockY = 200;
 
-    circle.on("pointerdown", function () {
-      // Toggle color
-      currentIndex = (currentIndex + 1) % colors.length;
-      circle.fillColor = colors[currentIndex];
-      // Toggle text block visibility
-      if (currentIndex === 1) {
-        if (!textBlock) {
-          // Create text block if not exists
-          textBlock = scene.add.text(
-            textBlockX,
-            textBlockY,
-            "Hello, this is a text block!",
-            { fontSize: "18px", fill: "#fff" }
-          );
-          textBlock.setVisible(false);
-          // Create a semi-transparent rectangle behind the text
-          backgroundRect = scene.add.rectangle(
-            textBlockX - 10,
-            textBlockY - 10,
-            textBlock.width + 20,
-            textBlock.height + 20,
-            0x000000,
-            0.7
-          );
-          backgroundRect.setOrigin(0, 0);
-          backgroundRect.setVisible(false);
-        }
-        textBlock.setVisible(!textBlock.visible);
-        // Toggle background rectangle visibility along with the text block
-        backgroundRect.setVisible(textBlock.visible);
-      } else {
-        // If the circle is red, hide the text block and background rectangle
-        if (textBlock) {
-          textBlock.setVisible(false);
-          backgroundRect.setVisible(false);
-        }
-      }
-    });
+    // "Maze Game" in large text.
+        var startTextX = 750;
+        var startTextY = 300;
+        this.add.text(startTextX, startTextY, "Maze Game", {
+            fontSize: '100px',
+            fontFamily: 'Arial',
+            fontStyle: 'bold',
+            color: '#000000',
+        });
+        //"instructions" in smaller text
+        this.add.text(startTextX + 200, startTextY + 200, "click here to start", {
+            fontSize: '30px',
+            fontFamily: 'Arial',
+            color: '#000000',
+        });
+
+        // Hovering over button brighten it a little bit.
+        var circle = this.add.circle(startTextX + 300, startTextY + 290, 50, 0x8B0000).setInteractive();
+         // Set the circle interactive to enable pointer events
+        circle.setInteractive();
+        // Event listeners for hover
+        circle.on('pointerover', function () {
+            // Change color when hovered
+            circle.fillColor = 0xff0000;
+        });
+        circle.on('pointerout', function () {
+            // Reset to the original color when not hovered
+            circle.fillColor = 0x8B0000;
+        });
+
+        // "Maze Game" in large text.
+        var startTextX = 750;
+        var startTextY = 300;
+        this.add.text(startTextX, startTextY, "Maze Game", {
+            fontSize: '100px',
+            fontFamily: 'Arial',
+            fontStyle: 'bold',
+            color: '#000000',
+        });
+        //"instructions" in smaller text
+        this.add.text(startTextX + 200, startTextY + 200, "click here to start", {
+            fontSize: '30px',
+            fontFamily: 'Arial',
+            color: '#000000',
+        });
+
+        // Hovering over button brighten it a little bit.
+        var circle = this.add.circle(startTextX + 300, startTextY + 290, 50, 0x8B0000).setInteractive();
+         // Set the circle interactive to enable pointer events
+        circle.setInteractive();
+        // Event listeners for hover
+        circle.on('pointerover', function () {
+            // Change color when hovered
+            circle.fillColor = 0xff0000;
+        });
+        circle.on('pointerout', function () {
+            // Reset to the original color when not hovered
+            circle.fillColor = 0x8B0000;
+        });
+
+
+
+    // //when circle is clicked, color changes and text appears
+    // var colors = [0xff0000, 0x00ff00]; // Red and Green
+    // var currentIndex = 0; // Start with red
+    // var textBlock;
+    // var backgroundRect;
+    // var scene = this;
+    // var circle = this.add
+    //   .circle(700, 200, 25, colors[currentIndex])
+    //   .setInteractive();
+    // var textBlockX = 750;
+    // var textBlockY = 200;
+
+    // circle.on("pointerdown", function () {
+    //   // Toggle color
+    //   currentIndex = (currentIndex + 1) % colors.length;
+    //   circle.fillColor = colors[currentIndex];
+    //   // Toggle text block visibility
+    //   if (currentIndex === 1) {
+    //     if (!textBlock) {
+    //       // Create text block if not exists
+    //       textBlock = scene.add.text(
+    //         textBlockX,
+    //         textBlockY,
+    //         "Hello, this is a text block!",
+    //         { fontSize: "18px", fill: "#fff" }
+    //       );
+    //       textBlock.setVisible(false);
+    //       // Create a semi-transparent rectangle behind the text
+    //       backgroundRect = scene.add.rectangle(
+    //         textBlockX - 10,
+    //         textBlockY - 10,
+    //         textBlock.width + 20,
+    //         textBlock.height + 20,
+    //         0x000000,
+    //         0.7
+    //       );
+    //       backgroundRect.setOrigin(0, 0);
+    //       backgroundRect.setVisible(false);
+    //     }
+    //     textBlock.setVisible(!textBlock.visible);
+    //     // Toggle background rectangle visibility along with the text block
+    //     backgroundRect.setVisible(textBlock.visible);
+    //   } else {
+    //     // If the circle is red, hide the text block and background rectangle
+    //     if (textBlock) {
+    //       textBlock.setVisible(false);
+    //       backgroundRect.setVisible(false);
+    //     }
+    //   }
+    // });
   }
 
   //my player controls for testing using keyboard
@@ -298,6 +361,7 @@ const config = {
     },
   },
   scene: [GameScene, GameOver, GameWin],
+  //scene: [Start,GameScene, GameOver, GameWin],
 };
 
 const game = new Phaser.Game(config);
