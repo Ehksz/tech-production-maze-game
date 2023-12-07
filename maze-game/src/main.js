@@ -10,7 +10,8 @@ const sizes = {
   height: 1080,
 };
 
-const speedDown = 400;
+
+const speedDown = 300;
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -27,12 +28,16 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    //maze wall
+    this.load.image("tiles","/assets/maze-wall/wall.png");
+    this.load.image('wall','/drawtiles-spaced.png')
+  
     this.load.image("theplayer", "/assets/theplayer.png");
     this.load.image("apple", "assets/apple.png");
     this.load.image("background", "/assets/bg.png");
     this.load.audio('bg-audio', "/assets/dead.mp3");
     this.load.audio('soundMove', "/assets/soundMove.mp3");
-
+    
     //glowing asset
     this.load.image('apple-0', '/assets/glowing-asset/apple-glow.png');
     this.load.image('bag', '/assets/glowing-asset/bag-glow.png');
@@ -64,6 +69,8 @@ class GameScene extends Phaser.Scene {
   }
 
 
+
+
   create(data) {
     // Create the maze - Professor will provided the assets in a commit.
     // Reposition assets to create a maze.
@@ -83,7 +90,7 @@ class GameScene extends Phaser.Scene {
     // marlen-start [gameover, gamewin] [maze]
     // edward-maze [maze]
     // su-huan-li-maze [maze]
-
+    
     this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     // Set the scale to cover the entire game width and height
     var background = this.add.image(0, 0, "background");
@@ -120,7 +127,10 @@ class GameScene extends Phaser.Scene {
     //player code
     this.soundMove = this.sound.add("soundMove", { volume: 1 });
 
-    this.player = this.physics.add.image(sizes.width - 300, sizes.height - 300, "theplayer").setOrigin(0, 0)
+
+    this.player = this.physics.add.image(240, 200, "theplayer").setOrigin(0, 0);
+    
+
     // this.player.rotation()
     this.player.body.allowGravity = false
     this.player.setCollideWorldBounds(true);
@@ -136,11 +146,44 @@ class GameScene extends Phaser.Scene {
     this.object.body.allowGravity = false;
     this.object.setImmovable(true);
     //line 39 is the template for the hitbox of an object/asset
-    // this.object.setSize(this.object.width / 10, this.object.height - this.object.height / 10);
+    //this.object.setSize(this.object.width / 10, this.object.height - this.object.height / 10);
+    
+            //maze grid map 1 represent the wall and 0 represent the path
+            var level1 = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,1],
+            [1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],
+            [0,0,0,0,0,0,1,0,1,1,0,1,0,0,0,0,0,0,0,1,1,1,0,1],
+            [1,1,1,1,1,0,1,0,0,0,0,1,0,1,1,1,1,1,0,0,1,1,0,1],
+            [1,1,1,1,1,0,0,0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,0,1],
+            [1,1,1,1,0,1,1,1,1,1,0,1,0,1,0,0,0,0,0,0,1,1,0,1],
+            [1,1,1,1,0,1,1,1,0,0,0,0,0,1,1,1,0,1,1,1,1,1,0,1],
+            [1,1,1,1,0,1,0,1,0,1,1,1,0,0,1,1,0,1,1,0,1,1,0,1],
+            [1,1,0,0,0,1,0,0,0,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1],
+            [1,1,0,1,0,1,0,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,0,1],
+            [1,1,0,1,0,1,0,1,0,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1],
+            [1,1,0,1,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1],
+            [1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1],
+            [1,1,0,1,1,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,0,1,0,0],
+            [1,1,0,1,1,1,0,0,0,1,1,1,0,1,0,0,0,0,1,1,0,1,1,1],
+            [1,1,0,1,1,1,0,1,1,1,1,1,0,0,0,1,1,0,1,1,0,1,1,1],
+            [1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
+           // Create a maze using tilemap
+        var map = this.make.tilemap({ data: level1, tileWidth: 56, tileHeight: 35});
+        var tiles = map.addTilesetImage('wall', null, 32,18,1,2);
+        var layer = map.createLayer(0, tiles, 350, 190);
+        layer.scale = 0.5;
+       this.physics.world.enable(this.player);
+       this.physics.add.collider(this.player, layer);
+        map.setCollision(1);
+        // visualize the collision Tiles
+        //var debugGraphics = this.add.graphics();
+       // map.renderDebug(debugGraphics);
 
-    this.physics.add.collider(this.player, this.object);
+    this.physics.add.collider(this.player, this.object,);
     this.add.image(0, 0, "bg").setOrigin(0, 0);
-    this.player.scale = 0.5;
+    this.player.scale = 0.1;
 
     this.soundMove.setVolume(1);
     this.soundMove.play();
@@ -153,7 +196,6 @@ class GameScene extends Phaser.Scene {
       currentIndex = (currentIndex + 1) % colors.length;
       circle.fillColor = colors[currentIndex];
     });
-
   }
 
   //my player controls for testing using keyboard
@@ -220,7 +262,7 @@ class GameScene extends Phaser.Scene {
       }
     }
 
-    // for loop create 3 square top each other and beside.
+    /*/ for loop create 3 square top each other and beside.
     const size = 40;
 
     for (let i = 0; i < 3; i++) {
@@ -233,7 +275,7 @@ class GameScene extends Phaser.Scene {
       const squarex = 1000 + i * (size + 5);
       const squarey = 590;
       const square = this.add.rectangle(squarex, squarey, size, size, 0xffffff);
-    }
+    }*/
 
     // Jumping logic
     if (!this.isJumping) {
@@ -271,7 +313,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [Preloader, Start, GameScene, GameOver, GameWin],
+  scene: [GameScene, GameOver, GameWin],
 };
 
 const game = new Phaser.Game(config);
