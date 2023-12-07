@@ -10,14 +10,14 @@ const sizes = {
   height: 1080,
 };
 
-const speedDown = 400;
+const speedDown = 300;
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super("Maze");
     this.player;
     this.cursor;
-    this.playerSpeed = speedDown + 50;
+    this.playerSpeed = speedDown + 10;
     this.object; //template to asiign the mutlple or single object/asset
     this.isMoving = false;
     this.spaceBar;
@@ -28,8 +28,7 @@ class GameScene extends Phaser.Scene {
 
   preload() {
     this.load.image("theplayer", "/assets/theplayer.png");
-    this.load.image("apple", "assets/apple.png");
-    this.load.image("background", "/assets/bg.png");
+    this.load.image("bg", "/assets/tilebg.png");
     this.load.audio("bg-audio", "/assets/dead.mp3");
     this.load.audio("soundMove", "/assets/soundMove.mp3");
 
@@ -52,7 +51,6 @@ class GameScene extends Phaser.Scene {
     this.load.audio("bg-audio", "/assets/dead.mp3");
 
     //Christian - Artifiacts
-    this.load.image("apple-1", "/assets/christian-artifacts/apple.png");
     this.load.image("bag-0", "/assets/christian-artifacts/bag.png");
     this.load.image("book-0", "/assets/christian-artifacts/book.png");
     this.load.image("cauldron-0", "/assets/christian-artifacts/cauldron.png");
@@ -64,38 +62,64 @@ class GameScene extends Phaser.Scene {
     this.load.image("rat-0", "/assets/christian-artifacts/rat.png");
     this.load.image("red-skull-0", "/assets/christian-artifacts/red-skull.png");
     this.load.image("torch-0", "/assets/christian-artifacts/torch.png");
+    this.load.spritesheet("walking", "/assets/new_player.png", {
+      frameWidth: 64,
+      frameHeight: 64, // Replace with the correct height if it's not 64
+    });
   }
 
   create(data) {
-    // Create the maze - Professor will provided the assets in a commit.
-    // Reposition assets to create a maze.
-    // Each asset should have a collision attached to it.
-    // When user escapes the maze transition to the game win,
-    // Counter that starts 1 minute [60, 59, 58, 57, etc] when its hits zero transition to game over.
-
-    // We'll also add assets to make it look nice.
-    // When Time runs out transition to the the game over.
-    // var background = data.background;
-    // var playerSpritesheet = data.playerSpritesheet;
-
-    // [name]-[preloader | start | gameover | gamewin | maze]
-    // bryan-preloader [maze]
-    // angel-preloader[gameover, gamewin] [maze]
-    // justice-start [gameover, gamewin] [maze]
-    // marlen-start [gameover, gamewin] [maze]
-    // edward-maze [maze]
-    // su-huan-li-maze [maze]
+    this.add.image(0, 0, "bg").setOrigin(0, 0);
 
     this.spaceBar = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
-    // Set the scale to cover the entire game width and height
-    var background = this.add.image(0, 0, "background");
-    background.setScale(
-      config.width / background.width,
-      config.height / background.height
-    );
-    background.setOrigin(0);
+
+    this.anims.create({
+      key: "walk-down",
+      frames: this.anims.generateFrameNumbers("walking", {
+        start: 0,
+        end: 3,
+      }), // Replace numberOfFrames with the actual number of frames in your spritesheet
+      frameRate: 10,
+      repeat: -1, // Loop the animation
+    });
+
+    this.anims.create({
+      key: "walk-left",
+      frames: this.anims.generateFrameNumbers("walking", {
+        start: 4,
+        end: 7,
+      }), // Replace numberOfFrames with the actual number of frames in your spritesheet
+      frameRate: 10,
+      repeat: -1, // Loop the animation
+    });
+
+    this.anims.create({
+      key: "walk-right",
+      frames: this.anims.generateFrameNumbers("walking", {
+        start: 8,
+        end: 11,
+      }), // Replace numberOfFrames with the actual number of frames in your spritesheet
+      frameRate: 10,
+      repeat: -1, // Loop the animation
+    });
+
+    this.anims.create({
+      key: "walk-up",
+      frames: this.anims.generateFrameNumbers("walking", {
+        start: 12,
+        end: 15,
+      }), // Replace numberOfFrames with the actual number of frames in your spritesheet
+      frameRate: 10,
+      repeat: -1, // Loop the animation
+    });
+
+    // Add a sprite that uses the animation
+    this.player = this.physics.add.sprite(100, 100, "walking");
+
+    // Play the 'walk' animation on the sprite
+
     //Christian images
     this.add.image(700, 700, "apple-1");
     this.add.image(750, 700, "bag-0");
@@ -124,19 +148,13 @@ class GameScene extends Phaser.Scene {
     this.add.image(1100, 400, "red-skull");
     this.add.image(1150, 400, "torch");
     //player code
-    this.soundMove = this.sound.add("soundMove", { volume: 1 });
-
-    this.player = this.physics.add
-      .image(sizes.width - 300, sizes.height - 300, "theplayer")
-      .setOrigin(0, 0);
-    // this.player.rotation()
+    this.soundMove = this.sound.add("soundMove", { volume: 0 });
     this.player.body.allowGravity = false;
+    this.player.setImmovable(true);
     this.player.setCollideWorldBounds(true);
-    //keyboard movement for player testing
     this.cursor = this.input.keyboard.createCursorKeys();
-    //background audio
     this.bgMusic = this.sound.add("bg-audio");
-    // this.bgMusic.play();
+    this.bgMusic.play();
 
     //template for object/asset hitbox
     this.object = this.physics.add
@@ -145,13 +163,10 @@ class GameScene extends Phaser.Scene {
     this.object.setCollideWorldBounds(true);
     this.object.body.allowGravity = false;
     this.object.setImmovable(true);
-    //line 39 is the template for the hitbox of an object/asset
-    // this.object.setSize(this.object.width / 10, this.object.height - this.object.height / 10);
 
     this.physics.add.collider(this.player, this.object);
-    this.player.scale = 0.5;
+    this.player.scale = 1;
 
-    this.soundMove.setVolume(1);
     this.soundMove.play();
 
     //when circle is clicked, color changes and text appears
@@ -209,75 +224,43 @@ class GameScene extends Phaser.Scene {
   //my player controls for testing using keyboard
   update() {
     const playerVolume = this.soundMove.volume;
+    this.player.setVelocity(0);
+    this.soundMove.setVolume(0);
 
     if (typeof this.cursor !== "undefined") {
-      const { left, right, up, down } = this.cursor;
+      const { left, right, down, up } = this.cursor;
 
+      // Horizontal movement
       if (left.isDown) {
-        this.player.setVelocityX(-this.playerSpeed);
-        // rotate player to assign direction
-        this.player.angle = 270;
-        if (playerVolume !== 1) {
-          this.soundMove.setVolume(1);
-        }
+        this.player.setVelocityX(-160);
+        this.player.anims.play("walk-left", true);
+        this.soundMove.setVolume(0.5);
       } else if (right.isDown) {
-        this.player.setVelocityX(this.playerSpeed);
-        // rotate player to assign direction
-        this.player.angle = 90;
-        if (playerVolume !== 1) {
-          this.soundMove.setVolume(1);
-        }
-      } else {
-        this.player.setVelocityX(0);
-        this.soundMove.setVolume(0);
+        this.soundMove.setVolume(0.5);
+        this.player.setVelocityX(160);
+        this.player.anims.play("walk-right", true);
       }
-      if (up.isDown) {
-        this.player.setVelocityY(-this.playerSpeed);
-        // if the left, right and up key is pressed same time then rotate player to assign direction
-        if (left.isDown) {
-          this.player.angle = 315;
-        } else if (right.isDown) {
-          this.player.angle = 45;
-        } else {
-          this.player.angle = 0;
-        }
-        if (playerVolume !== 1) {
-          this.soundMove.setVolume(1);
-        }
-      } else if (down.isDown) {
-        this.player.setVelocityY(this.playerSpeed);
-        // if the left, right and down key is pressed same time then rotate player to assign direction
-        if (left.isDown) {
-          this.player.angle = 225;
-        } else if (right.isDown) {
-          this.player.angle = 135;
-        } else {
-          this.player.angle = 180;
-        }
-        if (playerVolume !== 1) {
-          this.soundMove.setVolume(1);
-        }
-      } else {
-        this.player.setVelocityY(0);
-        if (playerVolume !== 0) {
-          this.soundMove.setVolume(0);
+
+      // Vertical movement - only allow if no horizontal keys are pressed
+      if (!left.isDown && !right.isDown) {
+        if (up.isDown) {
+          this.soundMove.setVolume(0.5);
+          this.player.setVelocityY(-160);
+          this.player.anims.play("walk-up", true);
+        } else if (down.isDown) {
+          this.soundMove.setVolume(0.5);
+          this.player.setVelocityY(160);
+          this.player.anims.play("walk-down", true);
         }
       }
     }
 
-    // for loop create 3 square top each other and beside.
-    const size = 40;
-
-    for (let i = 0; i < 3; i++) {
-      const squarex = 1045;
-      const squarey = 500 + i * (size + 5);
-      const square = this.add.rectangle(squarex, squarey, size, size, 0xffffff);
-    }
-
-    for (let i = 0; i < 3; i++) {
-      const squarex = 1000 + i * (size + 5);
-      const squarey = 590;
-      const square = this.add.rectangle(squarex, squarey, size, size, 0xffffff);
+    if (
+      this.player.body.velocity.x === 0 &&
+      this.player.body.velocity.y === 0
+    ) {
+      // Stop any movement animations when idle
+      this.player.anims.stop();
     }
 
     // Jumping logic
@@ -312,10 +295,9 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: speedDown },
-      debug: true,
     },
   },
-  scene: [Preloader, Start, GameScene, GameOver, GameWin],
+  scene: [GameScene, GameOver, GameWin],
 };
 
 const game = new Phaser.Game(config);
