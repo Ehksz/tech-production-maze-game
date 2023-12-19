@@ -24,6 +24,10 @@ class GameScene extends Phaser.Scene {
     this.isJumping = false;
     this.jumpHeight = 100;
     this.orignalJumpSpot;//the oringal y axis when the player initalize the jump 
+    this.timeInSeconds = 60;
+    this.timeText;
+    this.timer;
+    this.invisibleWall;
   }
 
   preload() {
@@ -145,6 +149,13 @@ class GameScene extends Phaser.Scene {
     this.soundMove.setVolume(1);
     this.soundMove.play();
 
+    //logic for invisible wall
+    this.invisibleWall = this.physics.add.image(sizes.width / 2, sizes.height / 2, "apple").setOrigin(0, 0);
+    this.invisibleWall.setCollideWorldBounds(false);
+    this.invisibleWall.body.allowGravity = false;
+    this.invisibleWall.setImmovable(false);
+    this.physics.add.overlap(this.player, this.invisibleWall, this.onInvisibleWallCollision, null, this);
+
     //circle color changes when clicked
     var colors = [0xff0000, 0x00ff00]; // Red and Green
     var currentIndex = 1; // Start with green
@@ -154,7 +165,54 @@ class GameScene extends Phaser.Scene {
       circle.fillColor = colors[currentIndex];
     });
 
+    // Display the initial time
+    this.timeText = this.add.text(sizes.width -110, sizes.height - 1000, "0:00", { fontSize: "32px", fill: "#39ff14" }).setOrigin(0.5);
+    //Set up timer
+    this.timer = this.time.addEvent({
+      delay: 1000,
+      callback: this.tick,
+      callbackScope: this,
+      loop: true,
+    });
   }
+
+  onInvisibleWallCollision(player, invisibleWall) {
+    // when the player collides with the invisible wal. the game window will pop up
+    this.showGameWindow();
+  }
+  // Function to show the game window
+  showGameWindow() {
+    this.add.text(sizes.width / 2, sizes.height / 2, "Congratulations! You Win!", {
+      fontSize: "32px",
+      fill: "#ffffff",
+    }).setOrigin(0.5);
+  }
+
+  tick() {
+    // Subtract a second
+    this.timeInSeconds--;
+    //how many minutes are left
+    const minutes = Math.floor(this.timeInSeconds / 60);
+    //number of seconds left
+    const seconds = this.timeInSeconds - minutes * 60;
+    //show the time
+    const timeString = this.addZeros(minutes) + ":" + this.addZeros(seconds);
+    //display the string in the scene
+    this.timeText.text = timeString;
+    //check if the time is done
+    if (this.timeInSeconds === 0) {
+      // Stop the timer
+      this.timer.remove();
+      // game over logic or scene transition goes here
+      this.timeText.text = "Game Over";
+    }
+  }
+  addZeros(num) {
+    if (num < 10) {
+      return "0" + num;
+    }
+    return num.toString();
+  } 
 
   //my player controls for testing using keyboard
   update() {
@@ -271,7 +329,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [Preloader, Start, GameScene, GameOver, GameWin],
+  scene: [/*Preloader, Start,*/ GameScene, GameOver, GameWin],
 };
 
 const game = new Phaser.Game(config);
